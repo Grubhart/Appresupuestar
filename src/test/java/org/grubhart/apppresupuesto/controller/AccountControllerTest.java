@@ -24,10 +24,10 @@ Operaciones Expuestas por el API  (No CRUD  create read update delete)
  */
 
 
-@SpringBootTest
-@AutoConfigureWebTestClient
-//@ExtendWith(SpringExtension.class)
-//@WebFluxTest(controllers = AccountController.class)
+//@SpringBootTest
+//@AutoConfigureWebTestClient
+@ExtendWith(SpringExtension.class)
+@WebFluxTest(controllers = AccountController.class)
 public class AccountControllerTest {
 
 
