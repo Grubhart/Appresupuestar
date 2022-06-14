@@ -7,7 +7,7 @@ package org.grubhart.apppresupuesto.domain;
  *   Puedo depositar dinero y aumenta el balance
  *   puedo retirar dinero y reduce el balance = balance inicial - monto retirado
  *   no tiene limite maximo
-        -> depositos consecutivos no pueden dejarlo por encima del valor maximo
+        * depositos consecutivos no pueden dejarlo por encima del valor maximo
  *   no puede tener un balance menor de 0
             * no puede iniciar en negativo
             * los retiros no pueden dejarla en un balance negativo
