@@ -1,5 +1,6 @@
 package org.grubhart.apppresupuesto.controller;
 
+import org.grubhart.apppresupuesto.controller.request.DepositRequest;
 import org.grubhart.apppresupuesto.domain.Account;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
@@ -28,6 +29,14 @@ public class AccountController {
     public Account getStatus(@PathVariable("nombreCuenta") String name){
         Account account = new Account(name,20);
         return account;
+    }
+
+    @PostMapping(value = { "/account/{name}/deposit"})
+    @ResponseStatus(HttpStatus.OK)
+    public Account deposit(@RequestBody DepositRequest request, @PathVariable("name") String name) {
+
+        return null;
+
     }
 
 }

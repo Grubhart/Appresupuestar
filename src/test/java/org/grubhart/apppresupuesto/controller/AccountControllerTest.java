@@ -1,6 +1,7 @@
 package org.grubhart.apppresupuesto.controller;
 
 
+import org.grubhart.apppresupuesto.controller.request.DepositRequest;
 import org.grubhart.apppresupuesto.domain.Account;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -17,8 +18,8 @@ import org.springframework.test.web.reactive.server.WebTestClient;
 Operaciones Expuestas por el API  (No CRUD  create read update delete)
 *   Crear una cuenta
 *  Consultar el saldo de la cuenta
-->    Ejecutar un deposito a la cuenta
-    Ejecutar un retiro a la cuenta
+*    Ejecutar un deposito a la cuenta
+->    Ejecutar un retiro a la cuenta
     Cerrar la cuenta
  */
 
@@ -73,6 +74,28 @@ public class AccountControllerTest {
                 .expectBody()
                 .jsonPath("$.name").isEqualTo("Ahorros")
                 .jsonPath("$.balance").isEqualTo(20.0);
+
+    }
+
+
+    /*
+    Dado que tengo una cuenta llamada "ahorros" con balance de 20
+    cuando deposito 5
+    la cuenta tiene 25
+     */
+    @Test
+    public void depositaCuenta(@Autowired WebTestClient client){
+
+        DepositRequest request = new DepositRequest(5.0);
+
+
+
+        client.post()
+                .uri("/account/{name}/deposit","ahorros")
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(BodyInserters.fromValue(request))
+                .exchange()
+                .expectStatus().isOk();
 
     }
 
