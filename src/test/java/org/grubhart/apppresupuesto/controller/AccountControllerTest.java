@@ -5,9 +5,8 @@ import org.grubhart.apppresupuesto.domain.Account;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebTestClient;
 import org.springframework.boot.test.autoconfigure.web.reactive.WebFluxTest;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.context.ApplicationContext;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
@@ -44,12 +43,17 @@ public class AccountControllerTest {
 
     @Test
     public void CreaCuenta(@Autowired WebTestClient client){
+
+        Account account = new Account();
+
         client.post()
                 .uri("/account")
                 .contentType(MediaType.APPLICATION_JSON)
-                //.body(BodyInserters.fromObject(employee))
+                .body(BodyInserters.fromValue(account))
                 .exchange()
-                .expectStatus().isOk();
+                .expectStatus().isOk()
+                .expectBody()
+                .jsonPath("$.balance").isEqualTo(0.0);
 
 
     }
