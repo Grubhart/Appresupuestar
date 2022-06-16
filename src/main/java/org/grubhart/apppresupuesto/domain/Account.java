@@ -4,18 +4,22 @@ import org.grubhart.apppresupuesto.exception.InvalidAmountException;
 
 public class Account {
 
+    private String name;
+
     private double balance = 0.0;
 
     public Account() {
     }
 
-    public Account(double initialAmount) {
+    public Account(String name, double initialAmount) {
         if(initialAmount < 0.00000000000000){
             throw new InvalidAmountException();
         }
-
+        this.name = name;
         this.balance = initialAmount;
     }
+
+
 
 
     public double getBalance() {
@@ -38,5 +42,9 @@ public class Account {
         }
         this.balance -=  amount;
 
+    }
+
+    public String getName() {
+        return name;
     }
 }

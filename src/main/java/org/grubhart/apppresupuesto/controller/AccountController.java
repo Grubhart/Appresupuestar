@@ -3,10 +3,7 @@ package org.grubhart.apppresupuesto.controller;
 import org.grubhart.apppresupuesto.domain.Account;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,7 +13,7 @@ public class AccountController {
 
     private List<Account> accounts = new ArrayList<>();
 
-    @PostMapping(value = { "/account"  })
+    @PostMapping(value = { "/account"})
     @ResponseStatus(HttpStatus.OK)
     public Account create(@RequestBody Account account) {
 
@@ -24,6 +21,13 @@ public class AccountController {
 
         return account;
 
+    }
+
+    @GetMapping(value = {"/account/{nombreCuenta}"})
+    @ResponseStatus(HttpStatus.OK)
+    public Account getStatus(@PathVariable("nombreCuenta") String name){
+        Account account = new Account(name,20);
+        return account;
     }
 
 }

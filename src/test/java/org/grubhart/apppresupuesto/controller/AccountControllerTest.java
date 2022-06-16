@@ -15,9 +15,9 @@ import org.springframework.test.web.reactive.server.WebTestClient;
 
 /*
 Operaciones Expuestas por el API  (No CRUD  create read update delete)
-->   Crear una cuenta
-    Consultar el saldo de la cuenta
-    Ejecutar un deposito a la cuenta
+*   Crear una cuenta
+*  Consultar el saldo de la cuenta
+->    Ejecutar un deposito a la cuenta
     Ejecutar un retiro a la cuenta
     Cerrar la cuenta
  */
@@ -55,6 +55,24 @@ public class AccountControllerTest {
                 .expectBody()
                 .jsonPath("$.balance").isEqualTo(0.0);
 
+
+    }
+
+    /*
+    Dado que tengo una cuenta con 20 soles
+    cuando consulto el saldo
+    me devuelve 20
+     */
+    @Test
+    public void getEstadoCuenta(@Autowired WebTestClient client){
+
+        client.get()
+                .uri("/account/{nombreCuenta}","Ahorros")
+                .exchange()
+                .expectStatus().isOk()
+                .expectBody()
+                .jsonPath("$.name").isEqualTo("Ahorros")
+                .jsonPath("$.balance").isEqualTo(20.0);
 
     }
 

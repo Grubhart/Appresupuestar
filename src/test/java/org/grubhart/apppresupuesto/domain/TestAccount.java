@@ -13,6 +13,7 @@ package org.grubhart.apppresupuesto.domain;
             * los retiros no pueden dejarla en un balance negativo
 
 
+
             Z ero
             O ne
             M any
@@ -32,17 +33,18 @@ public class TestAccount {
 
     /*
     ZERO
-    dado que tengo una cuenta recien creada
+    dado que tengo una cuenta recien creada con nombre "cuenta"
     cuando consulto el balance de la cuenta
     obtengo 0
      */
     @Test
     public void testCuentaIniciaBalance0(){
-        Account account = new Account();
+        Account account = new Account("cuenta",0);
 
         double  balance = account.getBalance();
 
         assertEquals(0.0, balance);
+        assertEquals("cuenta", account.getName());
     }
 
     /*
@@ -70,7 +72,7 @@ public class TestAccount {
 
     @Test
     public void testRetiraDinero() throws InvalidAmountException {
-        Account account = new Account(20.0);
+        Account account = new Account("", 20.0);
 
 
         account.withdraw(14.0);
@@ -88,7 +90,7 @@ public class TestAccount {
     public void testIniciaBalanceNegativo(){
 
         assertThrows(InvalidAmountException.class, () -> {
-            new Account(-10.0);
+            new Account("", -10.0);
         });
 
     }
@@ -103,7 +105,7 @@ public class TestAccount {
     @Test
     public void testRetirayDejaBalanceNegativo(){
 
-        Account account = new Account(15);
+        Account account = new Account("", 15);
 
         assertThrows(InvalidAmountException.class, () ->{
             account.withdraw(100);
@@ -121,7 +123,7 @@ public class TestAccount {
     @Test
     public void testMultiplesRetiros(){
 
-        Account account = new Account(20);
+        Account account = new Account("", 20);
 
         try {
             account.withdraw(7);
@@ -143,7 +145,7 @@ public class TestAccount {
     @Test
     public void testDepositaPorEncimaDeLimite(){
 
-        Account account = new Account(100000000.00);
+        Account account = new Account("", 100000000.00);
 
         // spike cuanto seria lo que tengo que sumar
 
