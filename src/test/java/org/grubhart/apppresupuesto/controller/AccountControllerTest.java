@@ -17,10 +17,10 @@ import org.springframework.test.web.reactive.server.WebTestClient;
 /*
 Operaciones Expuestas por el API  (No CRUD  create read update delete)
 *   Crear una cuenta
-*  Consultar el saldo de la cuenta
-*    Ejecutar un deposito a la cuenta
-*    Ejecutar un retiro a la cuenta
-*    Cerrar la cuenta
+*   Consultar el saldo de la cuenta
+*   Ejecutar un deposito a la cuenta
+*   Ejecutar un retiro a la cuenta
+*   Cerrar la cuenta
  */
 
 
