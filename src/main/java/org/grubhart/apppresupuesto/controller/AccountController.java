@@ -49,4 +49,14 @@ public class AccountController {
 
     }
 
+    @PostMapping(value = { "/account/{name}/close"})
+    @ResponseStatus(HttpStatus.OK)
+    public Account close( @PathVariable("name") String name) {
+
+        Account account = new Account(name,20);
+        account.setStatus(0);
+        return account;
+
+    }
+
 }

@@ -7,6 +7,7 @@ public class Account {
     private String name;
 
     private double balance = 0.0;
+    private int status;
 
     public Account() {
     }
@@ -17,6 +18,7 @@ public class Account {
         }
         this.name = name;
         this.balance = initialAmount;
+        this.status = 1;
     }
 
 
@@ -47,4 +49,13 @@ public class Account {
     public String getName() {
         return name;
     }
+
+    public void setStatus(int status) {
+        this.status = status;
+    }
+
+    public int getStatus(){
+        return status;
+    }
+
 }

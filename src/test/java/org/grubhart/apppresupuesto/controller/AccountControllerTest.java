@@ -19,8 +19,8 @@ Operaciones Expuestas por el API  (No CRUD  create read update delete)
 *   Crear una cuenta
 *  Consultar el saldo de la cuenta
 *    Ejecutar un deposito a la cuenta
-->    Ejecutar un retiro a la cuenta
-    Cerrar la cuenta
+*    Ejecutar un retiro a la cuenta
+*    Cerrar la cuenta
  */
 
 
@@ -118,6 +118,29 @@ public class AccountControllerTest {
                 .expectBody()
                 .jsonPath("$.name").isEqualTo("Ahorros")
                 .jsonPath("$.balance").isEqualTo(15.0);
+
+    }
+
+    /*
+    dado que tengo una cuenta llamada Ahorros
+    cuando la elimino
+    debe devolver la cuenta con estado cerrado = 2
+
+    estados:
+    0 cerrada
+    1 abierta
+    2 bloqueada
+     */
+    @Test
+    public void cerrarCuenta(@Autowired WebTestClient client){
+
+        client.post()
+                .uri("/account/{name}/close","Ahorros")
+                .exchange()
+                .expectStatus().isOk()
+                .expectBody()
+                .jsonPath("$.name").isEqualTo("Ahorros")
+                .jsonPath("$.status").isEqualTo(0);
 
     }
 
