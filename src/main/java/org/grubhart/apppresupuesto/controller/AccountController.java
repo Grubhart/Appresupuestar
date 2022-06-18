@@ -2,17 +2,25 @@ package org.grubhart.apppresupuesto.controller;
 
 import org.grubhart.apppresupuesto.controller.request.DepositRequest;
 import org.grubhart.apppresupuesto.domain.Account;
+import org.grubhart.apppresupuesto.service.AccountService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 @RestController
 public class AccountController {
 
     private List<Account> accounts = new ArrayList<>();
+
+    @Autowired
+    private AccountService service;
+
+
 
     @PostMapping(value = { "/account"})
     @ResponseStatus(HttpStatus.OK)
