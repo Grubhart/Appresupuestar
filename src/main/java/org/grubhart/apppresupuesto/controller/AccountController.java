@@ -35,7 +35,17 @@ public class AccountController {
     @ResponseStatus(HttpStatus.OK)
     public Account deposit(@RequestBody DepositRequest request, @PathVariable("name") String name) {
 
-        return null;
+        Account account = new Account(name,25);
+        return account;
+
+    }
+
+    @PostMapping(value = { "/account/{name}/withdraw"})
+    @ResponseStatus(HttpStatus.OK)
+    public Account withdraw(@RequestBody DepositRequest request, @PathVariable("name") String name) {
+
+        Account account = new Account(name,15);
+        return account;
 
     }
 

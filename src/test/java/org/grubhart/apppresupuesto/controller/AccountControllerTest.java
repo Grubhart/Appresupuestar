@@ -24,8 +24,7 @@ Operaciones Expuestas por el API  (No CRUD  create read update delete)
  */
 
 
-//@SpringBootTest
-//@AutoConfigureWebTestClient
+
 @ExtendWith(SpringExtension.class)
 @WebFluxTest(controllers = AccountController.class)
 public class AccountControllerTest {
@@ -88,15 +87,39 @@ public class AccountControllerTest {
 
         DepositRequest request = new DepositRequest(5.0);
 
-
-
         client.post()
-                .uri("/account/{name}/deposit","ahorros")
+                .uri("/account/{name}/deposit","Ahorros")
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(BodyInserters.fromValue(request))
                 .exchange()
-                .expectStatus().isOk();
+                .expectStatus().isOk()
+                .expectBody()
+                .jsonPath("$.name").isEqualTo("Ahorros")
+                .jsonPath("$.balance").isEqualTo(25.0);
 
     }
+
+    /*
+    Dado que tengo una cuenta llamada Ahorros con balance de 20
+    cuando retiro 5
+    la cuenta debe tener 15
+     */
+    @Test
+    public void retiraCuenta(@Autowired WebTestClient client){
+
+        DepositRequest request = new WithdrawRequest(5.0);
+
+        client.post()
+                .uri("/account/{name}/withdraw","Ahorros")
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(BodyInserters.fromValue(request))
+                .exchange()
+                .expectStatus().isOk()
+                .expectBody()
+                .jsonPath("$.name").isEqualTo("Ahorros")
+                .jsonPath("$.balance").isEqualTo(15.0);
+
+    }
+
 
 }
