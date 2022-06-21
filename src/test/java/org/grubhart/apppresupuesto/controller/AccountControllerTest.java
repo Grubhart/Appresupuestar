@@ -6,7 +6,9 @@ import org.grubhart.apppresupuesto.domain.Account;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebTestClient;
 import org.springframework.boot.test.autoconfigure.web.reactive.WebFluxTest;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.context.ApplicationContext;
 import org.springframework.http.MediaType;
@@ -25,8 +27,9 @@ Operaciones Expuestas por el API  (No CRUD  create read update delete)
 
 
 
-@ExtendWith(SpringExtension.class)
-@WebFluxTest(controllers = AccountController.class)
+
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@AutoConfigureWebTestClient
 public class AccountControllerTest {
 
 
