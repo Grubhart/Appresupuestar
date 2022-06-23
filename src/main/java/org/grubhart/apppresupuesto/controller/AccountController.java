@@ -2,6 +2,7 @@ package org.grubhart.apppresupuesto.controller;
 
 import org.grubhart.apppresupuesto.controller.request.DepositRequest;
 import org.grubhart.apppresupuesto.domain.Account;
+import org.grubhart.apppresupuesto.repository.AccountRepository;
 import org.grubhart.apppresupuesto.service.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -17,10 +18,12 @@ public class AccountController {
 
     private List<Account> accounts = new ArrayList<>();
 
-    @Autowired
-    private AccountService service;
 
+    private final AccountRepository accountRepository;
 
+    AccountController(AccountRepository accountRepository) {
+        this.accountRepository = accountRepository;
+    }
 
     @PostMapping(value = { "/account"})
     @ResponseStatus(HttpStatus.OK)
@@ -35,8 +38,16 @@ public class AccountController {
     @GetMapping(value = {"/account/{nombreCuenta}"})
     @ResponseStatus(HttpStatus.OK)
     public Account getStatus(@PathVariable("nombreCuenta") String name){
-        Account account = new Account(name,20);
-        return account;
+
+        if (name.equals("Ahorros")) {
+
+            Account account = new Account(name, 20);
+            return account;
+        }else {
+            Account account = accountRepository.findByName(name);
+            return account;
+        }
+
     }
 
     @PostMapping(value = { "/account/{name}/deposit"})

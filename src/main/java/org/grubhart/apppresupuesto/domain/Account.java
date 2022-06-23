@@ -2,7 +2,18 @@ package org.grubhart.apppresupuesto.domain;
 
 import org.grubhart.apppresupuesto.exception.InvalidAmountException;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+
+
+@Entity
 public class Account {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    public Long id;
 
     private String name;
 

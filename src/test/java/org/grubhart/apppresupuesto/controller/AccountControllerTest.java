@@ -148,4 +148,21 @@ public class AccountControllerTest {
     }
 
 
+    /*
+    Dado que tengo una cuenta llamada "Ahorros"
+    cuando consulto la cuenta por nombre
+    me devuelve la cuenta solicitada
+     */
+    @Test
+    public void getAccountByName(@Autowired WebTestClient client){
+
+        client.get()
+                .uri("/account/{nombreCuenta}","Ahorros_Grub")
+                .exchange()
+                .expectStatus().isOk()
+                .expectBody()
+                .jsonPath("$.name").isEqualTo("Ahorros_Grub");
+    }
+
+
 }
