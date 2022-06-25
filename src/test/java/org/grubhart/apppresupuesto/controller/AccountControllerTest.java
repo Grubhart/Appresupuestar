@@ -4,15 +4,12 @@ package org.grubhart.apppresupuesto.controller;
 import org.grubhart.apppresupuesto.controller.request.DepositRequest;
 import org.grubhart.apppresupuesto.domain.Account;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebTestClient;
-import org.springframework.boot.test.autoconfigure.web.reactive.WebFluxTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.context.ApplicationContext;
 import org.springframework.http.MediaType;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.reactive.server.WebTestClient;
 
 
@@ -40,12 +37,12 @@ public class AccountControllerTest {
 
     /*
     Dado que no tengo una cuenta
-    Invoco la creacion de una cuenta
-    Debo tener una cuenta con Balance de 0
+    Invoco la creacion de una cuenta sin nombre
+    Debe arrojar un status bad request
      */
 
     @Test
-    public void CreaCuenta(@Autowired WebTestClient client){
+    public void CreaCuentaIncompleta(@Autowired WebTestClient client){
 
         Account account = new Account();
 
@@ -54,9 +51,34 @@ public class AccountControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(BodyInserters.fromValue(account))
                 .exchange()
+                .expectStatus().isBadRequest();
+
+
+    }
+
+
+      /*
+    Dado que no tengo una cuenta
+    Invoco la creacion de una cuenta nombre: Cuenta 01 balance 0
+    Debe devolverme la cuenta creada con status creado
+     */
+
+    @Test
+    public void CreaCuenta(@Autowired WebTestClient client){
+
+        Account account = new Account("Cuenta 01",0.00);
+
+
+        client.post()
+                .uri("/account")
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(BodyInserters.fromValue(account))
+                .exchange()
                 .expectStatus().isOk()
                 .expectBody()
-                .jsonPath("$.balance").isEqualTo(0.0);
+                .jsonPath("$.name").isEqualTo("Cuenta 01")
+                .jsonPath("$.balance").isEqualTo(0.00)
+                .jsonPath("$.status").isEqualTo(1);
 
 
     }
@@ -146,23 +168,5 @@ public class AccountControllerTest {
                 .jsonPath("$.status").isEqualTo(0);
 
     }
-
-
-    /*
-    Dado que tengo una cuenta llamada "Ahorros"
-    cuando consulto la cuenta por nombre
-    me devuelve la cuenta solicitada
-     */
-    @Test
-    public void getAccountByName(@Autowired WebTestClient client){
-
-        client.get()
-                .uri("/account/{nombreCuenta}","Ahorros_Grub")
-                .exchange()
-                .expectStatus().isOk()
-                .expectBody()
-                .jsonPath("$.name").isEqualTo("Ahorros_Grub");
-    }
-
 
 }

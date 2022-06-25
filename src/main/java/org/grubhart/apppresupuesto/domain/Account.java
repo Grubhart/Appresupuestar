@@ -1,6 +1,6 @@
 package org.grubhart.apppresupuesto.domain;
 
-import org.grubhart.apppresupuesto.exception.InvalidAmountException;
+import org.grubhart.apppresupuesto.error.exception.InvalidAmountException;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -12,7 +12,7 @@ import javax.persistence.Id;
 public class Account {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Long id;
 
     private String name;
@@ -29,7 +29,7 @@ public class Account {
         }
         this.name = name;
         this.balance = initialAmount;
-        this.status = 1;
+            this.status = 1;
     }
 
 

@@ -15,7 +15,7 @@ public class DepositRequest {
         return amount;
     }
 
-    public void setAmount(double v) {
+    public void setAmount(double amount) {
         this.amount = amount;
     }
 }

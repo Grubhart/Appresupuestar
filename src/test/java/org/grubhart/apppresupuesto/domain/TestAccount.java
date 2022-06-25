@@ -24,7 +24,7 @@ package org.grubhart.apppresupuesto.domain;
 
  */
 
-import org.grubhart.apppresupuesto.exception.InvalidAmountException;
+import org.grubhart.apppresupuesto.error.exception.InvalidAmountException;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;

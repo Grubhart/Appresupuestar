@@ -2,6 +2,7 @@ package org.grubhart.apppresupuesto.controller;
 
 import org.grubhart.apppresupuesto.controller.request.DepositRequest;
 import org.grubhart.apppresupuesto.domain.Account;
+import org.grubhart.apppresupuesto.error.exception.InvalidCreateAccountRequestException;
 import org.grubhart.apppresupuesto.repository.AccountRepository;
 import org.grubhart.apppresupuesto.service.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,9 +30,19 @@ public class AccountController {
     @ResponseStatus(HttpStatus.OK)
     public Account create(@RequestBody Account account) {
 
-        accounts.add(account);
+        //accounts.add(account);
+        Account savedAccount = null;
 
-        return account;
+        boolean validRequest = true;
+
+        validRequest &= account.getName()!=null;
+
+        if(validRequest) {
+            savedAccount = accountRepository.save(account);
+        }else{
+            throw new InvalidCreateAccountRequestException(account);
+        }
+        return savedAccount;
 
     }
 
@@ -39,14 +50,8 @@ public class AccountController {
     @ResponseStatus(HttpStatus.OK)
     public Account getStatus(@PathVariable("nombreCuenta") String name){
 
-        if (name.equals("Ahorros")) {
-
-            Account account = new Account(name, 20);
-            return account;
-        }else {
-            Account account = accountRepository.findByName(name);
-            return account;
-        }
+        Account account = accountRepository.findByName(name);
+        return account;
 
     }
 
@@ -54,8 +59,15 @@ public class AccountController {
     @ResponseStatus(HttpStatus.OK)
     public Account deposit(@RequestBody DepositRequest request, @PathVariable("name") String name) {
 
-        Account account = new Account(name,25);
-        return account;
+        Account accountToDeposit = accountRepository.findByName(name);
+
+        accountToDeposit.deposit(request.getAmount());
+
+        Account savedAccount = accountRepository.save(accountToDeposit);
+
+
+
+        return savedAccount;
 
     }
 
