@@ -1,16 +1,25 @@
 package org.grubhart.apppresupuesto.controller;
 
 
+import org.dbunit.IDatabaseTester;
+import org.dbunit.JdbcDatabaseTester;
+import org.dbunit.dataset.IDataSet;
+import org.dbunit.dataset.xml.FlatXmlDataSetBuilder;
 import org.grubhart.apppresupuesto.controller.request.DepositRequest;
 import org.grubhart.apppresupuesto.domain.Account;
+
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebTestClient;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.web.reactive.function.BodyInserters;
-import org.springframework.context.ApplicationContext;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.reactive.server.WebTestClient;
+
+import java.io.FileInputStream;
+
 
 
 /*
@@ -29,11 +38,36 @@ Operaciones Expuestas por el API  (No CRUD  create read update delete)
 @AutoConfigureWebTestClient
 public class AccountControllerTest {
 
+    private IDatabaseTester databaseTester;
 
-    public void setUp(ApplicationContext context){
-
+    protected IDataSet getDataSet() throws Exception
+    {
+        return new FlatXmlDataSetBuilder().build(new FileInputStream("C:\\Users\\edson\\IdeaProjects\\AppPresupuesto\\src\\test\\resources\\AccountTest.xml"));
     }
 
+
+    @BeforeEach
+    protected void setUp() throws Exception
+    {
+
+        databaseTester = new JdbcDatabaseTester("com.mysql.cj.jdbc.Driver",
+                "jdbc:mysql://localhost:59239/appresupuestar", "root", "my-secret-pw");
+
+        // initialize your dataset here
+        IDataSet dataSet = getDataSet();
+        // ...
+
+        databaseTester.setDataSet( dataSet );
+        // will call default setUpOperation
+        databaseTester.onSetup();
+    }
+
+    @AfterEach
+    protected void tearDown() throws Exception
+    {
+        // will call default tearDownOperation
+        databaseTester.onTearDown();
+    }
 
     /*
     Dado que no tengo una cuenta
@@ -55,7 +89,6 @@ public class AccountControllerTest {
 
 
     }
-
 
       /*
     Dado que no tengo una cuenta
