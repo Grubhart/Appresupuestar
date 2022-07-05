@@ -25,6 +25,7 @@ package org.grubhart.apppresupuesto.domain;
  */
 
 import org.grubhart.apppresupuesto.error.exception.InvalidAmountException;
+import org.grubhart.apppresupuesto.error.exception.UnavailableAccountException;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -55,7 +56,7 @@ public class TestAccount {
     @Test
     public void testPrimerDeposito(){
 
-        Account account = new Account();
+        Account account = new Account("cuenta",0);
 
         account.deposit(10);
 
@@ -156,5 +157,42 @@ public class TestAccount {
         });
 
     }
+
+    /*
+    Dado que tengo una cuenta en estado BLOQUEADO
+    cuando intento un retiro
+    debe arrojar error
+     */
+
+    @Test
+    public void testretiraCuentaEnEstadoInvalido(){
+
+        Account account = new Account("", 100000000.00);
+        account.setStatus(0);
+
+        assertThrows(UnavailableAccountException.class, () ->{
+            account.withdraw(1);
+        });
+
+    }
+
+     /*
+    Dado que tengo una cuenta en estado BLOQUEADO
+    cuando intento un retiro
+    debe arrojar error
+     */
+
+    @Test
+    public void testDepositoCuentaEnEstadoInvalido(){
+
+        Account account = new Account("", 100000000.00);
+        account.setStatus(0);
+
+        assertThrows(UnavailableAccountException.class, () ->{
+            account.deposit(1);
+        });
+
+    }
+
 
 }

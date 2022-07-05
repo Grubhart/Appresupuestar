@@ -1,6 +1,7 @@
 package org.grubhart.apppresupuesto.domain;
 
 import org.grubhart.apppresupuesto.error.exception.InvalidAmountException;
+import org.grubhart.apppresupuesto.error.exception.UnavailableAccountException;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -29,7 +30,7 @@ public class Account {
         }
         this.name = name;
         this.balance = initialAmount;
-            this.status = 1;
+        this.status = 1;
     }
 
 
@@ -45,6 +46,10 @@ public class Account {
             throw new InvalidAmountException();
         }
 
+        if(status!=1){
+            throw new UnavailableAccountException();
+        }
+
         this.balance += amount;
     }
 
@@ -52,6 +57,10 @@ public class Account {
 
         if(amount > this.balance){
             throw new InvalidAmountException();
+        }
+
+        if(status!=1){
+            throw new UnavailableAccountException();
         }
         this.balance -=  amount;
 

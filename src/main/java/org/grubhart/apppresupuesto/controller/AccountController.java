@@ -4,16 +4,20 @@ import org.grubhart.apppresupuesto.controller.request.DepositRequest;
 import org.grubhart.apppresupuesto.domain.Account;
 import org.grubhart.apppresupuesto.error.exception.InvalidCreateAccountRequestException;
 import org.grubhart.apppresupuesto.repository.AccountRepository;
+import org.grubhart.apppresupuesto.service.AccountService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 public class AccountController {
 
+    private final AccountService accountService;
+
 
     private final AccountRepository accountRepository;
 
-    AccountController(AccountRepository accountRepository) {
+    AccountController(AccountService accountService, AccountRepository accountRepository) {
+        this.accountService = accountService;
         this.accountRepository = accountRepository;
     }
 
@@ -66,7 +70,9 @@ public class AccountController {
     @ResponseStatus(HttpStatus.OK)
     public Account withdraw(@RequestBody DepositRequest request, @PathVariable("name") String name) {
 
-        Account account = new Account(name,15);
+        Account account = accountRepository.findByName(name);
+        account.withdraw(request.getAmount());
+        accountRepository.save(account);
         return account;
 
     }
@@ -75,9 +81,9 @@ public class AccountController {
     @ResponseStatus(HttpStatus.OK)
     public Account close( @PathVariable("name") String name) {
 
-        Account account = new Account(name,20);
+        Account account = accountRepository.findByName(name);
         account.setStatus(0);
-        return account;
+        return accountRepository.save(account);
 
     }
 
@@ -86,17 +92,13 @@ public class AccountController {
     @ResponseStatus(HttpStatus.OK)
     public Account transfer( @PathVariable("accountName") String accountName, @RequestBody AccountTransferRequest transferRequest)  {
 
-        Account accountOrigen = accountRepository.findByName(accountName);
-        Account accountTarget = accountRepository.findByName(transferRequest.getAccountTargetName());
 
-        accountOrigen.withdraw(transferRequest.getAmount());
+        String accountTargetName = transferRequest.getAccountTargetName();
+        double amount = transferRequest.getAmount();
 
-        accountTarget.deposit(transferRequest.getAmount());
+        Account updatedAccount = accountService.transfer(accountName, accountTargetName, amount);
 
-        accountRepository.save(accountOrigen);
-        accountRepository.save(accountTarget);
-
-        return accountOrigen;
+        return updatedAccount;
 
 
     }

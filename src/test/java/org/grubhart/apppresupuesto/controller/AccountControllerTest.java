@@ -225,5 +225,81 @@ public class AccountControllerTest {
 
     }
 
+    /*
+    Dado que tengo una cuenta Cuenta3 con 10 y Cuenta2 con 80
+    cuando transfiero a de la cuenta Cuenta3 50 a Cuenta2
+    el servicio retorna codigo error 500
+     */
+    @Test
+    public void TranferirCuentaOrigenFondosInsuficientes(@Autowired WebTestClient client){
+
+        AccountTransferRequest request = new AccountTransferRequest("Cuenta2",50.00);
+
+        client.post()
+                .uri("/account/{nameOrigin}/transfer","Cuenta3")
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(BodyInserters.fromValue(request))
+                .exchange()
+                .expectStatus().is5xxServerError();
+
+    }
+
+    /*
+    Dado que tengo una cuenta CuentaOrigenBloqueada con 100 y Cuenta2 con 80
+    cuando transfiero a de la cuenta CuentaOrigenBloqueada 50 a Cuenta2
+    el servicio retorna codigo error 500
+     */
+    @Test
+    public void TranferirCuentaOrigenCerrada(@Autowired WebTestClient client){
+
+        AccountTransferRequest request = new AccountTransferRequest("CuentaOrigenBloqueada",50.00);
+
+        client.post()
+                .uri("/account/{nameOrigin}/transfer","CuentaOrigenBloqueada")
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(BodyInserters.fromValue(request))
+                .exchange()
+                .expectStatus().is5xxServerError();
+
+    }
+
+    /*
+    Dado que tengo una cuenta Ahorros con 20 y CuentaDestinoBloqueada con 100
+    cuando transfiero a de la cuenta Ahorros 10 a CuentaDestinoBloqueada
+    el servicio retorna codigo error 500
+     */
+    @Test
+    public void TranferirCuentaDestinoCerrada(@Autowired WebTestClient client){
+
+        AccountTransferRequest request = new AccountTransferRequest("Ahorros",10.00);
+
+        client.post()
+                .uri("/account/{nameOrigin}/transfer","CuentaDestinoBloqueada")
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(BodyInserters.fromValue(request))
+                .exchange()
+                .expectStatus().is5xxServerError();
+
+    }
+
+    /*
+   Dado que tengo una cuenta CuentaOrigenBloqueada con 100 y CuentaDestinoBloqueada con 100
+   cuando transfiero a de la cuenta Ahorros 10 a CuentaDestinoBloqueada
+   el servicio retorna codigo error 500
+    */
+    @Test
+    public void TranferirCuentaOrigenDestinoCerrada(@Autowired WebTestClient client){
+
+        AccountTransferRequest request = new AccountTransferRequest("CuentaOrigenBloqueada",10.00);
+
+        client.post()
+                .uri("/account/{nameOrigin}/transfer","CuentaDestinoBloqueada")
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(BodyInserters.fromValue(request))
+                .exchange()
+                .expectStatus().is5xxServerError();
+
+    }
+
 
 }
