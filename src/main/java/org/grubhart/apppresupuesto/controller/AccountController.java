@@ -81,4 +81,24 @@ public class AccountController {
 
     }
 
+
+    @PostMapping(value = { "/account/{accountName}/transfer"})
+    @ResponseStatus(HttpStatus.OK)
+    public Account transfer( @PathVariable("accountName") String accountName, @RequestBody AccountTransferRequest transferRequest)  {
+
+        Account accountOrigen = accountRepository.findByName(accountName);
+        Account accountTarget = accountRepository.findByName(transferRequest.getAccountTargetName());
+
+        accountOrigen.withdraw(transferRequest.getAmount());
+
+        accountTarget.deposit(transferRequest.getAmount());
+
+        accountRepository.save(accountOrigen);
+        accountRepository.save(accountTarget);
+
+        return accountOrigen;
+
+
+    }
+
 }

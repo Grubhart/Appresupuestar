@@ -202,4 +202,28 @@ public class AccountControllerTest {
 
     }
 
+
+    /*
+    Dado que tengo una cuenta Cuenta1 con 100 y Cuenta2 con 80
+    cuando transfiero a de la cuenta Cuenta1 50 a Cuenta 2
+    el servicio retorna correcto y el estado de Cuenta1
+     */
+    @Test
+    public void TranferirCuentaOk(@Autowired WebTestClient client){
+
+        AccountTransferRequest request = new AccountTransferRequest("Cuenta2",50.00);
+
+        client.post()
+                .uri("/account/{nameOrigin}/transfer","Cuenta1")
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(BodyInserters.fromValue(request))
+                .exchange()
+                .expectStatus().isOk()
+                .expectBody()
+                .jsonPath("$.name").isEqualTo("Cuenta1")
+                .jsonPath("$.balance").isEqualTo(50);
+
+    }
+
+
 }
