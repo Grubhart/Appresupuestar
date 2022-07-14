@@ -29,6 +29,7 @@ Operaciones Expuestas por el API  (No CRUD  create read update delete)
 *   Ejecutar un deposito a la cuenta
 *   Ejecutar un retiro a la cuenta
 *   Cerrar la cuenta
+*   Transferencia entre cuentas
  */
 
 
