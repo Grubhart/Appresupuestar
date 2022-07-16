@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebTestClient;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.test.web.reactive.server.FluxExchangeResult;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import org.springframework.web.reactive.function.BodyInserters;
 
@@ -21,8 +22,8 @@ import java.io.FileInputStream;
 Operaciones Expuestas por el API  (No CRUD  create read update delete)
         *  Crear una categoria
         *  Consultar una cuenta por nombre
-        ->  Listar Categorias
-        -   Modificar Categorias
+        *  Listar Categorias
+        ->   Modificar Categorias
         -   Cerrar Categorias
 */
 
@@ -113,4 +114,28 @@ public class CategoryControllerTest {
                 .expectStatus().isOk()
                 .expectBodyList(ExpenseCategory.class).hasSize(2);
     }
+
+    /*
+    Dado que tengo una 1 categoria llamada "Categoria_de_gasto" con balance 30
+    cuando modifico el nombre a "categoria" y el balance a 50
+    el endpoint devuelve estado correcto y la nueva informacion de la categoria
+     */
+
+    @Test
+    public void testActualizaCategoria(@Autowired WebTestClient client) {
+
+        ExpenseCategory category = new ExpenseCategory("Categoria", 50);
+
+        client.post()
+                .uri("/expensecategory/{nombreCategoria}", "Categoria_de_Gasto")
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(BodyInserters.fromValue(category))
+                .exchange()
+                .expectStatus().isOk()
+                .expectBody()
+                .jsonPath("$.name").isEqualTo("Categoria")
+                .jsonPath("$.balance").isEqualTo(50.00);
+
+    }
+
 }

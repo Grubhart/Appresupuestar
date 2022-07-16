@@ -46,4 +46,20 @@ public class ExpenseCategoryController {
         return categories;
 
     }
+
+
+    @PostMapping(value = { "/expensecategory/{nombreCategory}"})
+    @ResponseStatus(HttpStatus.OK)
+    public ExpenseCategory update(@RequestBody ExpenseCategory categoryValuesToUpdate, @PathVariable("nombreCategory") String name){
+
+        ExpenseCategory storedCategory = categoryRepository.findByName(name);
+
+        storedCategory.setName(categoryValuesToUpdate.getName());
+        storedCategory.setBalance(categoryValuesToUpdate.getBalance());
+
+        ExpenseCategory  updatedCategopry =  categoryRepository.save(storedCategory);
+
+        return updatedCategopry;
+
+    }
 }
