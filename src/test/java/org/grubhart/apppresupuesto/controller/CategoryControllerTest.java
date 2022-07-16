@@ -110,6 +110,7 @@ public class CategoryControllerTest {
         client.get()
                 .uri("/expensecategory")
                 .exchange()
-                .expectStatus().isOk();
+                .expectStatus().isOk()
+                .expectBodyList(ExpenseCategory.class).hasSize(2);
     }
 }
