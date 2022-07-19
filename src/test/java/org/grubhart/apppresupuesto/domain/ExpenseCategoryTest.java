@@ -9,51 +9,11 @@ Representacion de una categoria de gasto
 
  */
 
-import org.dbunit.IDatabaseTester;
-import org.dbunit.JdbcDatabaseTester;
-import org.dbunit.dataset.IDataSet;
-import org.dbunit.dataset.xml.FlatXmlDataSetBuilder;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import java.io.FileInputStream;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 public class ExpenseCategoryTest {
-
-
-    private IDatabaseTester databaseTester;
-
-    protected IDataSet getDataSet() throws Exception
-    {
-        return new FlatXmlDataSetBuilder().build(new FileInputStream("C:\\Users\\edson\\IdeaProjects\\AppPresupuesto\\src\\test\\resources\\ExpenseCategoryTestDataSet.xml"));
-    }
-
-
-    @BeforeEach
-    protected void setUp() throws Exception
-    {
-
-        databaseTester = new JdbcDatabaseTester("com.mysql.cj.jdbc.Driver",
-                "jdbc:mysql://localhost:59239/appresupuestar", "root", "my-secret-pw");
-
-        // initialize your dataset here
-        IDataSet dataSet = getDataSet();
-        // ...
-
-        databaseTester.setDataSet( dataSet );
-        // will call default setUpOperation
-        databaseTester.onSetup();
-    }
-
-    @AfterEach
-    protected void tearDown() throws Exception
-    {
-        // will call default tearDownOperation
-        databaseTester.onTearDown();
-    }
 
 
 
@@ -89,6 +49,23 @@ public class ExpenseCategoryTest {
 
         assertEquals("Categoria de Gasto", category.getName());
         assertEquals(50.00, category.getBalance());
+    }
+
+
+    /*
+    Dado que tengo una categoria de Nombre "Categoria_de_Gasto"  en estado abierto
+    cuando la modifico a cerrado
+    la categoria esta cerrada
+     */
+    @Test
+    public void testCierraCategoria(){
+
+        ExpenseCategory category = new ExpenseCategory("Categoria_de_Gasto",0.0);
+
+        category.setStatus(ExpenseCategory.CLOSE);
+
+        assertEquals(ExpenseCategory.CLOSE, category.getStatus());
+
     }
 
 

@@ -9,12 +9,16 @@ import javax.persistence.Id;
 @Entity
 public class ExpenseCategory {
 
+    public static final int CLOSE = 0;
+    public static final int OPEN = 1;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Long id;
 
     private String name;
     private double balance;
+    private int status;
 
     public ExpenseCategory() {
     }
@@ -23,6 +27,7 @@ public class ExpenseCategory {
 
         this.name = name;
         this.balance = balance;
+        this.status = ExpenseCategory.OPEN;
 
     }
 
@@ -40,5 +45,13 @@ public class ExpenseCategory {
 
     public String getName() {
         return name;
+    }
+
+    public void setStatus(int status) {
+        this.status=status;
+    }
+
+    public int getStatus() {
+        return status;
     }
 }

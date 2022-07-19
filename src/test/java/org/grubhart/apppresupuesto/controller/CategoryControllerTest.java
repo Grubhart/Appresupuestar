@@ -12,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebTestClient;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
-import org.springframework.test.web.reactive.server.FluxExchangeResult;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import org.springframework.web.reactive.function.BodyInserters;
 
@@ -23,8 +22,8 @@ Operaciones Expuestas por el API  (No CRUD  create read update delete)
         *  Crear una categoria
         *  Consultar una cuenta por nombre
         *  Listar Categorias
-        ->   Modificar Categorias
-        -   Cerrar Categorias
+        *   Modificar Categorias
+        ->   Cerrar Categorias
 */
 
 
@@ -136,6 +135,27 @@ public class CategoryControllerTest {
                 .jsonPath("$.name").isEqualTo("Categoria")
                 .jsonPath("$.balance").isEqualTo(50.00);
 
+    }
+
+     /*
+    Dado que tengo una 1 categoria llamada "Categoria_de_gasto" con balance 30 y estado Abierto
+    cuando invoco el endpoint de cierre de categoria
+    el endpoint devuelve estado correcto y la categoria con su nuevo estado
+     */
+
+    @Test
+    public void testCierraCategoria(@Autowired WebTestClient client) {
+
+
+
+        client.post()
+                .uri("/expensecategory/{nombreCategoria}/close", "Categoria_de_Gasto")
+                .exchange()
+                .expectStatus().isOk()
+                .expectBody()
+                .jsonPath("$.name").isEqualTo("Categoria_de_Gasto")
+                .jsonPath("$.balance").isEqualTo(30.00)
+                .jsonPath("$.status").isEqualTo(ExpenseCategory.CLOSE);
     }
 
 }

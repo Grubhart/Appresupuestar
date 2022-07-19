@@ -6,8 +6,6 @@ import org.grubhart.apppresupuesto.repository.ExpenseCategoryRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @RestController
 public class ExpenseCategoryController {
 
@@ -57,6 +55,18 @@ public class ExpenseCategoryController {
         storedCategory.setName(categoryValuesToUpdate.getName());
         storedCategory.setBalance(categoryValuesToUpdate.getBalance());
 
+        ExpenseCategory  updatedCategopry =  categoryRepository.save(storedCategory);
+
+        return updatedCategopry;
+
+    }
+
+    @PostMapping(value = { "/expensecategory/{nombreCategory}/close"})
+    @ResponseStatus(HttpStatus.OK)
+    public ExpenseCategory close(@PathVariable("nombreCategory") String name){
+
+        ExpenseCategory storedCategory = categoryRepository.findByName(name);
+        storedCategory.setStatus(ExpenseCategory.CLOSE);
         ExpenseCategory  updatedCategopry =  categoryRepository.save(storedCategory);
 
         return updatedCategopry;
