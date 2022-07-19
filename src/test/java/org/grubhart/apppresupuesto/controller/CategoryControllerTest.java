@@ -23,7 +23,7 @@ Operaciones Expuestas por el API  (No CRUD  create read update delete)
         *  Consultar una cuenta por nombre
         *  Listar Categorias
         *   Modificar Categorias
-        ->   Cerrar Categorias
+        *   Cerrar Categorias
 */
 
 
